@@ -66,6 +66,7 @@ double neck_angle, neck_length, head_radius, head_radius_old;
   pcl::visualization::PointCloudColorHandlerCustom<PointT> red_color(cloud, 255, 0, 0);//RED COLOR Quad
   pcl::visualization::PointCloudColorHandlerCustom<PointT> green_color(cloud, 0, 255, 0);//GREEN COLOR Quad
   pcl::visualization::PointCloudColorHandlerCustom<PointT> blue_color(cloud, 0, 0, 255);//BLUE COLOR Quad
+  pcl::visualization::PointCloudColorHandlerCustom<PointT> yellow_color(cloud, 255, 255, 0);//Yellow COLOR Quad
   // --------------------------------------------
   // -----Open simpleVis and add point cloud-----
   // --------------------------------------------
@@ -307,15 +308,15 @@ int pcl_ransac()
 				for (int i = 0; i< cloud_sphere->points.size(); i++)
 				{
 					
-					//point[0] =  cloud_sphere->points[i].x; 
-					//point[1] =  cloud_sphere->points[i].y; 
-					//point[2] =  cloud_sphere->points[i].z;
+					point[0] =  cloud_sphere->points[i].x; 
+					point[1] =  cloud_sphere->points[i].y; 
+					point[2] =  cloud_sphere->points[i].z;
 					distance = sphere_centroid - point ;
 					magnitude = distance.norm();
 
-					cloud_sphere->points[i].x += (distance[0]/magnitude) * (head_radius - head_radius_old);
-					cloud_sphere->points[i].y += (distance[1]/magnitude) * (head_radius - head_radius_old);
-					cloud_sphere->points[i].z += (distance[2]/magnitude) * (head_radius - head_radius_old);
+					cloud_sphere->points[i].x += (distance[0]/magnitude) * ( head_radius_old - head_radius);
+					cloud_sphere->points[i].y += (distance[1]/magnitude) * ( head_radius_old - head_radius);
+					cloud_sphere->points[i].z += (distance[2]/magnitude) * ( head_radius_old - head_radius);
 
 				}
 				head_radius_old = head_radius;
@@ -323,6 +324,7 @@ int pcl_ransac()
 				 //Display PCL Mesh	
 				//viewer->removePointCloud("sphere");
 				//viewer->removeAllShapes();
+				
 				if(bCheckPolyView) 
 					viewer->addPolygonMesh(mesh,"polygon",0);
 				else			   
@@ -330,7 +332,7 @@ int pcl_ransac()
 				//viewer = simpleVis(cloud);
 				//viewer->addPointCloud<PointT>(cloud_cylinder, green_color, "cylinder");
 				viewer->removePointCloud("sphere_new");
-				viewer->addPointCloud<PointT>(cloud_sphere, blue_color, "sphere_new");
+				viewer->addPointCloud<PointT>(cloud_sphere, yellow_color, "sphere_new");
 				//PointT xphere ;
 				//xphere.x = sphere_centroid[0]; xphere.y = sphere_centroid[1];xphere.z = sphere_centroid[2];	
 				//viewer->addSphere(xphere,07,0,1,0,"sphere_centroid",0);
